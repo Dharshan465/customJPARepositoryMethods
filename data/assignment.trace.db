@@ -1,0 +1,12 @@
+2025-09-16 10:27:32.312501+05:30 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "Delete [*]table user where id='1'"; expected "identifier"; SQL statement:
+Delete table user where id='1' [42001-232]
+2025-09-16 10:27:38.283480+05:30 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "Delete [*]user where id='1'"; expected "identifier"; SQL statement:
+Delete user where id='1' [42001-232]
+2025-09-16 10:27:48.577214+05:30 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "Delete from [*]user where id='1'"; expected "identifier"; SQL statement:
+Delete from user where id='1' [42001-232]
+2025-09-16 10:27:53.603009+05:30 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "Delete from [*]user where id=1"; expected "identifier"; SQL statement:
+Delete from user where id=1 [42001-232]
