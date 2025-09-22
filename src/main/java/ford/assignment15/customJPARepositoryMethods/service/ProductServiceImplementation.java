@@ -4,8 +4,13 @@ import ford.assignment15.customJPARepositoryMethods.Repository.ProductRepository
 import ford.assignment15.customJPARepositoryMethods.exception.*;
 import ford.assignment15.customJPARepositoryMethods.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -126,6 +131,160 @@ public class ProductServiceImplementation implements ProductService {
             return products;
         }
     }
+
+    @Override
+    public List<Product> getTop3CheapestProductsInCategory(String category) throws ProductNotFoundException {
+        List<Product> products = this.productRepository.findTop3ByCategoryOrderByPriceAsc(category);
+        if (products.isEmpty()) {
+            throw new ProductNotFoundException("No Products Found in the category " + category);
+        } else {
+            return products;
+        }
+    }
+
+    @Override
+    public List<Product> getNewestProductsAddedLastWeek() throws ProductNotFoundException {
+        LocalDate oneWeekAgo = LocalDate.now().minusWeeks(1);
+        List<Product> products = this.productRepository.findByCreatedDateAfter(oneWeekAgo);
+        if (products.isEmpty()) {
+            throw new ProductNotFoundException("No Products Found added in the last week");
+        } else {
+            return products;
+        }
+
+    }
+
+    @Override
+    public List<Object[]> getAveragePricePerCategory() throws ProductNotFoundException {
+        List<Object[]> result = this.productRepository.findAveragePricePerCategory();
+        if (result.isEmpty()) {
+            throw new ProductNotFoundException("No Products Found in the Database");
+        } else {
+            return result;
+        }
+    }
+
+    @Override
+    public List<Object[]> getCategoryWithMaxProducts() throws ProductNotFoundException {
+        List<Object[]> result = this.productRepository.findCategoryWithMaxProducts();
+        if (result.isEmpty()) {
+            throw new ProductNotFoundException("No Products Found in the Database");
+        } else {
+            return result;
+        }
+    }
+
+    @Override
+    public List<Object[]> getTotalStockValuePerCategory() throws ProductNotFoundException {
+        List<Object[]> result = this.productRepository.findTotalStockValuePerCategory();
+        if (result.isEmpty()) {
+            throw new ProductNotFoundException("No Products Found in the Database");
+        } else {
+            return result;
+        }
+    }
+
+    @Override
+    public List<Product> getStockEquals(Integer stock) throws ProductNotFoundException {
+        List<Product>products= this.productRepository.findByStockEquals(stock);
+        if (products.isEmpty()) {
+            throw new ProductNotFoundException("No Products Found with stock equal to " + stock);
+        } else {
+            return products;
+        }
+    }
+
+    @Override
+    public List<Product> getStockLessThan(Integer stock) throws ProductNotFoundException {
+        List<Product>products= this.productRepository.findByStockLessThan(stock);
+        if (products.isEmpty()) {
+            throw new ProductNotFoundException("No Products Found with stock less than " + stock);
+        } else {
+            return products;
+        }
+    }
+
+    @Override
+    public List<Product> getProductsBeforeExpiryDate(LocalDate date) throws ProductNotFoundException {
+        List<Product>products= this.productRepository.findByExpiryDateBefore(date);
+        if (products.isEmpty()) {
+            throw new ProductNotFoundException("No Products Found with expiry date before " + date);
+        } else {
+            return products;
+        }
+    }
+
+    @Override
+    public List<Product> increasePriceByPercentageInCategory(String category, Double percentage) throws ProductNotFoundException, InvalidProductDataException {
+        if (percentage <= 0) {
+            throw new InvalidProductDataException("Percentage cannot be negative or zero");
+        }
+        int updatedCount = this.productRepository.increasePriceByPercentageForCategory(percentage, category);
+        if (updatedCount == 0) {
+            throw new ProductNotFoundException("No Products Found in the category " + category);
+        } else {
+            return this.productRepository.findByCategoryIn(List.of(category));
+        }
+    }
+
+    @Override
+    public List<Product> removeProductsEqualsZero() throws ProductNotFoundException {
+        List<Product> productsToDelete = this.productRepository.findByStockLessThan(1);
+        if (productsToDelete.isEmpty()) {
+            throw new ProductNotFoundException("No Products Found with stock equal to zero");
+        } else {
+            this.productRepository.deleteAll(productsToDelete);
+            return productsToDelete;
+        }
+    }
+
+    @Override
+    public List<Product> getMostExpensiveProductInEachCategory() throws ProductNotFoundException {
+        List<Product> products = this.productRepository.findMostExpensiveProductInEachCategory();
+        if (products.isEmpty()) {
+            throw new ProductNotFoundException("No Products Found in the Database");
+        } else {
+            return products;
+        }
+    }
+
+    @Override
+    public List<Product> getProductsNotPurchasedInLastNMonths(Integer months) throws ProductNotFoundException {
+//        List<Product>products=this.productRepository.findProductsNotPurchasedInLast6Months(months);
+//        if (products.isEmpty()) {
+//            throw new ProductNotFoundException("No Products Found not purchased in the last " + months + " months");
+//        } else {
+//            return products;
+//        }
+        return null;
+    }
+
+    @Override
+    public List<Product> getProductsBelongingToMultipleCategories(List<String> categories) throws ProductNotFoundException {
+//        List<Product>products= this.productRepository.findProductsInMultipleCategories(categories);
+//        if (products.isEmpty()) {
+//            throw new ProductNotFoundException("No Products Found in the categories " + categories);
+//        } else {
+//            return products;
+//        }
+        return null;
+    }
+
+    @Override
+    public Page<Product> getProductsByCategory(String category, int page, int size) throws ProductNotFoundException {
+        Sort sort=Sort.by(Sort.Direction.fromString("ASC"),"price");
+        Pageable pageable= PageRequest.of(page,size,sort);
+        return this.productRepository.findByCategory(category,pageable);
+
+    }
+
+    @Override
+    public Page<Product> getCheapestProducts(int page, int size) throws ProductNotFoundException {
+        Pageable pageable= PageRequest.of(page,size);
+        return this.productRepository.findAllByOrderByPriceAsc(pageable);
+    }
+
+
 //
 
 //    @Override

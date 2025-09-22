@@ -27,6 +27,21 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ProductException.class)
+    public ResponseEntity<ErrorResponse>
+    handleProductException(InvalidProductDataException ex, HttpServletRequest request)
+    {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        errorResponse.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        errorResponse.setMessage(ex.getMessage());
+        errorResponse.setPath(request.getRequestURI());
+        errorResponse.setTimestamp(LocalDateTime.now());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+
+
     @ExceptionHandler(InvalidProductDataException.class)
     public ResponseEntity<ErrorResponse>
     handleInvalidProductData(InvalidProductDataException ex, HttpServletRequest request)

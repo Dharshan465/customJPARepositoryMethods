@@ -76,6 +76,85 @@ public class ProductRestController {
     //---------------------------------------------------------------------------------------------------
 
 
+    @GetMapping("/search/top3-cheapest")
+    public List<Product> getTop3CheapestProductsInCategory(@RequestParam String category) throws ProductNotFoundException {
+        return productService.getTop3CheapestProductsInCategory(category);
+    }
+
+    @GetMapping("/search/newest")
+    public List<Product> getNewestProductsAddedLastWeek() throws ProductNotFoundException {
+        return productService.getNewestProductsAddedLastWeek();
+    }
+
+    //---------------------------------------------------------------------------------------------------
+
+    @GetMapping("/analytics/average-price-per-category")
+    public List<Object[]> getAveragePricePerCategory() throws ProductNotFoundException {
+        return productService.getAveragePricePerCategory();
+    }
+
+    @GetMapping("/analytics/category-with-max-products")
+    public List<Object[]> getCategoryWithMaxProducts() throws ProductNotFoundException {
+        return productService.getCategoryWithMaxProducts();
+    }
+
+    @GetMapping("/analytics/total-stock-value-per-category")
+    public List<Object[]> getTotalStockValuePerCategory() throws ProductNotFoundException {
+        return productService.getTotalStockValuePerCategory();
+    }
+
+    //---------------------------------------------------------------------------------------------------
+
+    @GetMapping("/search/stock-equals")
+    public List<Product> getStockEquals(@RequestParam Integer stock) throws ProductNotFoundException {
+        return productService.getStockEquals(stock);
+    }
+    @GetMapping("/search/stock-less-than")
+    public List<Product> getStockLessThan(@RequestParam Integer stock) throws ProductNotFoundException {
+        return productService.getStockLessThan(stock);
+    }
+    @GetMapping("/search/before-expiry-date")
+    public List<Product> getProductsBeforeExpiryDate(@RequestParam String date) throws ProductNotFoundException {
+        return productService.getProductsBeforeExpiryDate(java.time.LocalDate.parse(date));
+    }
+    //---------------------------------------------------------------------------------------------------
+
+    @PutMapping("/update/price-by-percentage")
+    public List<Product> increasePriceByPercentageInCategory(@RequestParam String category, @RequestParam Double percentage) throws ProductNotFoundException, InvalidProductDataException {
+        return productService.increasePriceByPercentageInCategory(category, percentage);
+    }
+
+    @DeleteMapping("/remove/zero-stock")
+    public List<Product> removeProductsEqualsZero() throws ProductNotFoundException {
+        return productService.removeProductsEqualsZero();
+    }
+    //---------------------------------------------------------------------------------------------------
+    @GetMapping("/search/most-expensive-per-category")
+    public List<Product> getMostExpensiveProductInEachCategory() throws ProductNotFoundException {
+        return productService.getMostExpensiveProductInEachCategory();
+    }
+    //---------------------------------------------------------------------------------------------------
+
+    @GetMapping("/page")
+    public List<Product> getProductsByCategoryWithPagination(@RequestParam String category,
+                                                            @RequestParam(defaultValue = "0") int page,
+                                                            @RequestParam(defaultValue = "10") int size) throws ProductNotFoundException {
+        return productService.getProductsByCategory(category, page, size).getContent();
+    }
+    @GetMapping("/page/cheapest")
+    public List<Product> getCheapestProductsWithPagination(@RequestParam(defaultValue = "0") int page,
+                                                           @RequestParam(defaultValue = "10") int size) throws ProductNotFoundException {
+        return productService.getCheapestProducts(page, size).getContent();
+    }
+
+    //---------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
 
 
 
