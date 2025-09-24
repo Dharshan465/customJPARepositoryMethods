@@ -20,7 +20,6 @@ public class BookCreationDTO {
         this.isbn = isbn;
     }
 
-    // Getters and Setters
     public String getTitle() {
         return title;
     }

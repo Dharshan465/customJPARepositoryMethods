@@ -23,7 +23,6 @@ public class AuthorDTO {
         this.nationality = nationality;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }

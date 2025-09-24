@@ -6,7 +6,7 @@ public class AuthorDetailDTO {
     private Long id;
     private String name;
     private String nationality;
-    private List<BookDTO> books; // List of books by this author
+    private List<BookDTO> books;
 
     public AuthorDetailDTO() {
     }
@@ -18,7 +18,6 @@ public class AuthorDetailDTO {
         this.books = books;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }

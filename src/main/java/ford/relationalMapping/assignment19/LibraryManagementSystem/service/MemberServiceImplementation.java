@@ -41,6 +41,9 @@ public class MemberServiceImplementation implements MemberService {
         if (memberCreationDTO.getMembershipCard().getExpiryDate().isBefore(LocalDate.now())) {
             throw new InvalidCardException("Membership card expiry date cannot be in the past.");
         }
+        if(memberCreationDTO.getMembershipCard().getExpiryDate()==null){
+            throw new NullPointerException("Membership card expiry date cannot be null.");
+        }
 
         Member member = new Member();
         member.setName(memberCreationDTO.getName());
