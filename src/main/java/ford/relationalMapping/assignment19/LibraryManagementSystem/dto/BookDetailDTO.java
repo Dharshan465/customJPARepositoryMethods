@@ -6,16 +6,18 @@ public class BookDetailDTO {
     private Long id;
     private String title;
     private String isbn;
+    private Integer publicationYear;
     private AuthorDTO author;
     private List<BorrowingMemberDTO> borrowedByMembers; // List of members who borrowed this book
 
     public BookDetailDTO() {
     }
 
-    public BookDetailDTO(Long id, String title, String isbn, AuthorDTO author, List<BorrowingMemberDTO> borrowedByMembers) {
+    public BookDetailDTO(Long id, String title, String isbn, Integer publicationYear,AuthorDTO author, List<BorrowingMemberDTO> borrowedByMembers) {
         this.id = id;
         this.title = title;
         this.isbn = isbn;
+        this.publicationYear = publicationYear;
         this.author = author;
         this.borrowedByMembers = borrowedByMembers;
     }

@@ -89,6 +89,7 @@ public class AuthorServiceImplementation implements AuthorService {
                 book.getId(),
                 book.getTitle(),
                 book.getIsbn(),
+                book.getPublicationYear(),
                 new AuthorDTO(book.getAuthor().getId(), book.getAuthor().getName(), book.getAuthor().getNationality())
         );
     }

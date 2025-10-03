@@ -87,8 +87,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     //i)Increase price by percentage for a category:
 
     @Modifying
-    @Query("UPDATE Product p SET p.price = p.price * (1 + :percentage / 100) WHERE p.category = :category")
-    int increasePriceByPercentageForCategory(@Param("percentage") Double percentage, @Param("category") String category);
+    @Query("UPDATE Product p SET p.price = p.price * (:multiplier) WHERE p.category = :category")
+    int increasePriceByPercentageForCategory(@Param("multiplier") Double multiplier, @Param("category") String category);
 
     //ii)Delete discontinued products:
 

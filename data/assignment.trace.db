@@ -751,3 +751,9 @@ org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (
 	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
 	at org.springframework.boot.SpringApplicationShutdownHook.run(SpringApplicationShutdownHook.java:116)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
+2025-09-25 11:01:51.868388+05:30 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM PRODUCT ALTER [*]TABLE product ALTER COLUMN price DECIMAL(19, 2)"; SQL statement:
+SELECT * FROM PRODUCT ALTER TABLE product ALTER COLUMN price DECIMAL(19, 2) [42000-232]
+2025-09-25 13:03:25.782743+05:30 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]BOOKS"; expected "BACKUP, BEGIN"; SQL statement:
+BOOKS [42001-232]

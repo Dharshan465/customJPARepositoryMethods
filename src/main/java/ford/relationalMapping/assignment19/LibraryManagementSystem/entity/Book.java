@@ -26,6 +26,10 @@ public class Book {
     @Column(nullable = false, unique = true)
     private String isbn;
 
+    @Pattern(regexp = "\\d{3,4}", message = "Publication year must be a valid year")
+    @Column( nullable = true)
+    private Integer publicationYear;
+
     // Many-to-One with Author (owning side)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
@@ -39,10 +43,20 @@ public class Book {
     public Book() {
     }
 
-    public Book(String title, String isbn, Author author) {
+    public Book(String title, String isbn,Integer publicationYear, Author author) {
         this.title = title;
         this.isbn = isbn;
+        this.publicationYear = publicationYear;
         this.author = author;
+    }
+
+
+    public Integer getPublicationYear() {
+        return publicationYear;
+    }
+
+    public void setPublicationYear(Integer publicationYear) {
+        this.publicationYear = publicationYear;
     }
 
     // Getters and Setters

@@ -3,6 +3,7 @@ package ford.assignment15.customJPARepositoryMethods.service;
 import ford.assignment15.customJPARepositoryMethods.Repository.ProductRepository;
 import ford.assignment15.customJPARepositoryMethods.exception.*;
 import ford.assignment15.customJPARepositoryMethods.model.Product;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -213,20 +214,21 @@ public class ProductServiceImplementation implements ProductService {
             return products;
         }
     }
-
+    @Transactional
     @Override
     public List<Product> increasePriceByPercentageInCategory(String category, Double percentage) throws ProductNotFoundException, InvalidProductDataException {
         if (percentage <= 0) {
             throw new InvalidProductDataException("Percentage cannot be negative or zero");
         }
-        int updatedCount = this.productRepository.increasePriceByPercentageForCategory(percentage, category);
+        Double multiplier = 1 + (percentage / 100.0);
+        int updatedCount = this.productRepository.increasePriceByPercentageForCategory(multiplier, category);
         if (updatedCount == 0) {
             throw new ProductNotFoundException("No Products Found in the category " + category);
         } else {
             return this.productRepository.findByCategoryIn(List.of(category));
         }
     }
-
+    @Transactional
     @Override
     public List<Product> removeProductsEqualsZero() throws ProductNotFoundException {
         List<Product> productsToDelete = this.productRepository.findByStockLessThan(1);
