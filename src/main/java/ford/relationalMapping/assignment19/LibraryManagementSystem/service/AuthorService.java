@@ -4,6 +4,7 @@ import ford.relationalMapping.assignment19.LibraryManagementSystem.dto.AuthorDTO
 import ford.relationalMapping.assignment19.LibraryManagementSystem.dto.AuthorDetailDTO;
 import ford.relationalMapping.assignment19.LibraryManagementSystem.dto.BookCreationDTO;
 import ford.relationalMapping.assignment19.LibraryManagementSystem.dto.BookDTO;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -12,4 +13,8 @@ public interface AuthorService {
     BookDTO addBookForAuthor(Long authorId, BookCreationDTO bookCreationDTO);
     AuthorDetailDTO getAuthorWithBooks(Long authorId);
     List<BookDTO> getBooksByAuthor(Long authorId);
+
+    BookDTO updateBookByAuthor(Long authorId, Long bookId, @Valid BookCreationDTO bookCreationDTO);
+
+    void deleteBookByAuthor(Long authorId, Long bookId);
 }

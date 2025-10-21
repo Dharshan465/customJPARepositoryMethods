@@ -8,6 +8,7 @@ import ford.relationalMapping.assignment19.LibraryManagementSystem.entity.Author
 import ford.relationalMapping.assignment19.LibraryManagementSystem.entity.Book;
 import ford.relationalMapping.assignment19.LibraryManagementSystem.exception.AuthorNotFoundException;
 import ford.relationalMapping.assignment19.LibraryManagementSystem.exception.BookAlreadyExistsException;
+import ford.relationalMapping.assignment19.LibraryManagementSystem.exception.BookNotFoundException;
 import ford.relationalMapping.assignment19.LibraryManagementSystem.repository.AuthorRepository;
 import ford.relationalMapping.assignment19.LibraryManagementSystem.repository.BookRepository;
 import ford.relationalMapping.assignment19.LibraryManagementSystem.service.AuthorService;
@@ -51,7 +52,9 @@ public class AuthorServiceImplementation implements AuthorService {
         Book book = new Book();
         book.setTitle(bookCreationDTO.getTitle());
         book.setIsbn(bookCreationDTO.getIsbn());
+        book.setPublicationYear(book.getPublicationYear());
         book.setAuthor(author); // Set the relationship
+
 
         Book savedBook = bookRepository.save(book);
         author.addBook(savedBook); // Ensure bidirectional consistency
@@ -82,6 +85,41 @@ public class AuthorServiceImplementation implements AuthorService {
         return author.getBooks().stream()
                 .map(this::mapToBookDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public BookDTO updateBookByAuthor(Long authorId, Long bookId, BookCreationDTO bookCreationDTO) {
+        authorRepository.findById(authorId)
+                .orElseThrow(() -> new AuthorNotFoundException("Author not found with id: " + authorId));
+
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new BookNotFoundException("Book not found with id: " + bookId));
+
+        if (!book.getAuthor().getId().equals(authorId)) {
+            throw new BookNotFoundException("Book does not belong to the specified author.");
+        }
+
+        book.setTitle(bookCreationDTO.getTitle());
+        book.setIsbn(bookCreationDTO.getIsbn());
+        book.setPublicationYear(bookCreationDTO.getPublicationYear());
+
+        Book updatedBook = bookRepository.save(book);
+        return mapToBookDTO(updatedBook);
+    }
+
+    @Override
+    public void deleteBookByAuthor(Long authorId, Long bookId) {
+        authorRepository.findById(authorId)
+                .orElseThrow(() -> new AuthorNotFoundException("Author not found with id: " + authorId));
+
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new BookNotFoundException("Book not found with id: " + bookId));
+
+        if (!book.getAuthor().getId().equals(authorId)) {
+            throw new BookNotFoundException("Book does not belong to the specified author.");
+        }
+
+        bookRepository.delete(book);
     }
 
     private BookDTO mapToBookDTO(Book book) {

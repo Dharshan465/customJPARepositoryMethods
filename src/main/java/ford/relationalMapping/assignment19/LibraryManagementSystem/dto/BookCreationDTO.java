@@ -2,6 +2,7 @@ package ford.relationalMapping.assignment19.LibraryManagementSystem.dto;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -13,9 +14,7 @@ public class BookCreationDTO {
     @NotBlank(message = "ISBN cannot be empty")
     private String isbn;
 
-    @NotBlank(message = "Publication year cannot be empty")
-    @Pattern(regexp = "\\d{3,4}", message = "Publication year must be a valid year")
-    @Column( nullable = false)
+
     private Integer publicationYear;
 
     public BookCreationDTO() {

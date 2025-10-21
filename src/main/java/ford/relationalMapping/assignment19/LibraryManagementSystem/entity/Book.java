@@ -26,8 +26,7 @@ public class Book {
     @Column(nullable = false, unique = true)
     private String isbn;
 
-    @Pattern(regexp = "\\d{3,4}", message = "Publication year must be a valid year")
-    @Column( nullable = true)
+
     private Integer publicationYear;
 
     // Many-to-One with Author (owning side)

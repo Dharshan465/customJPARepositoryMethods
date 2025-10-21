@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/authors")
+@CrossOrigin("http://localhost:4200/")
 public class AuthorController {
 
     private final AuthorService authorService;
@@ -45,6 +46,23 @@ public class AuthorController {
         AuthorDetailDTO author = authorService.getAuthorWithBooks(authorId);
         return ResponseEntity.ok(author);
     }
+    
+    
+    
+   // update book detail by author id
+    
+    @PatchMapping("/{authorId}/books/{bookId}")
+    public ResponseEntity<BookDTO> updateBookByAuthor(@PathVariable Long authorId, @PathVariable Long bookId, @Valid @RequestBody BookCreationDTO bookCreationDTO) {
+        BookDTO updatedBook = authorService.updateBookByAuthor(authorId, bookId, bookCreationDTO);
+        return ResponseEntity.ok(updatedBook);
+    }
+    //delete book by author id
+    @DeleteMapping("/{authorId}/books/{bookId}")
+    public ResponseEntity<Void> deleteBookByAuthor(@PathVariable Long authorId, @PathVariable Long bookId) {
+            authorService.deleteBookByAuthor(authorId, bookId);
+            return ResponseEntity.noContent().build();
+        }
 
+        
 
 }

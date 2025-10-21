@@ -65,4 +65,24 @@ public class BookServiceImplementation implements BookService {
                 .collect(Collectors.toList());
 
     }
+
+    @Override
+    public List<BookDetailDTO> getAllBooks() {
+        List<Book> books = bookRepository.findAll();
+        return books.stream()
+                .map(book -> {
+                    AuthorDTO authorDTO = new AuthorDTO(
+                            book.getAuthor().getId(),
+                            book.getAuthor().getName(),
+                            book.getAuthor().getNationality()
+                    );
+
+                    List<BorrowingMemberDTO> membersDTO = book.getBorrowedByMembers().stream()
+                            .map(member -> new BorrowingMemberDTO(member.getId(), member.getName(), member.getEmail()))
+                            .collect(Collectors.toList());
+
+                    return new BookDetailDTO(book.getId(), book.getTitle(), book.getIsbn(),book.getPublicationYear(), authorDTO, membersDTO);
+                })
+                .collect(Collectors.toList());
+    }
 }

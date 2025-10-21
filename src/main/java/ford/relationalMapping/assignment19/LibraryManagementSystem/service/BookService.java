@@ -12,4 +12,6 @@ public interface BookService {
     Page<BookDTO> getBooksByPublicationYear(int page, int size, String sort);
 
     List<BookDTO> searchBooksByPublicationYear(Integer year);
+
+    List<BookDetailDTO> getAllBooks();
 }
